@@ -197,5 +197,86 @@ TestCase {
         verify(!control.control3.activeFocus)
         control.destroy()
     }
+
+    SignalSpy {
+        id: checkSpy
+        signalName: "checkedChanged"
+    }
+
+    function test_checked() {
+        var button = Qt.createQmlObject('import QtQuick.Controls 1.1; Button { checkable: true }', container, '')
+
+        var checkCount = 0
+
+        checkSpy.clear()
+        checkSpy.target = button
+        verify(checkSpy.valid)
+        verify(!button.checked)
+
+        // stays unchecked on press
+        mousePress(button, button.width / 2, button.height / 2)
+        verify(button.pressed)
+        verify(!button.checked)
+        compare(checkSpy.count, checkCount)
+
+        // gets checked on release inside
+        mouseRelease(button, button.width / 2, button.height / 2)
+        verify(!button.pressed)
+        verify(button.checked)
+        compare(checkSpy.count, ++checkCount)
+
+        // stays checked on press
+        mousePress(button, button.width / 2, button.height / 2)
+        verify(button.pressed)
+        verify(button.checked)
+        compare(checkSpy.count, checkCount)
+
+        // stays checked on release outside
+        mouseMove(button, button.width * 2, button.height * 2)
+        mouseRelease(button, button.width * 2, button.height * 2)
+        verify(!button.pressed)
+        verify(button.checked)
+        compare(checkSpy.count, checkCount)
+
+        // stays checked on press
+        mousePress(button, button.width / 2, button.height / 2)
+        verify(button.pressed)
+        verify(button.checked)
+        compare(checkSpy.count, checkCount)
+
+        // gets unchecked on release inside
+        mouseRelease(button, button.width / 2, button.height / 2)
+        verify(!button.pressed)
+        verify(!button.checked)
+        compare(checkSpy.count, ++checkCount)
+
+        // stays unchecked on press
+        mousePress(button, button.width / 2, button.height / 2)
+        verify(button.pressed)
+        verify(!button.checked)
+        compare(checkSpy.count, checkCount)
+
+        // stays unchecked on release outside
+        mouseMove(button, button.width * 2, button.height * 2)
+        mouseRelease(button, button.width * 2, button.height * 2)
+        verify(!button.pressed)
+        verify(!button.checked)
+        compare(checkSpy.count, checkCount)
+
+        // keyboard toggle
+        button.forceActiveFocus()
+        keyClick(Qt.Key_Space)
+        verify(button.checked)
+        compare(checkSpy.count, ++checkCount)
+
+        // toggle on release
+        keyPress(Qt.Key_Space)
+        verify(button.checked)
+        keyRelease(Qt.Key_Space)
+        verify(!button.checked)
+        compare(checkSpy.count, ++checkCount)
+
+        button.destroy()
+    }
 }
 }

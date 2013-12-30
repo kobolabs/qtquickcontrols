@@ -119,10 +119,18 @@ Window {
 
     onStatusBarChanged: { if (statusBar) { statusBar.parent = statusBarArea } }
 
+    onVisibleChanged: { if (visible && menuBar) { menuBar.__parentWindow = root } }
+
     /*! \internal */
     default property alias data: contentArea.data
 
     color: syspal.window
+
+    flags: Qt.Window | Qt.WindowFullscreenButtonHint |
+        Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint |
+        Qt.WindowCloseButtonHint | Qt.WindowFullscreenButtonHint
+    // QTBUG-35049: Windows is removing features we didn't ask for, even though Qt::CustomizeWindowHint is not set
+    // Otherwise Qt.Window | Qt.WindowFullscreenButtonHint would be enough
 
     SystemPalette {id: syspal}
 
@@ -145,7 +153,8 @@ Window {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            height: childrenRect.height
+            implicitHeight: childrenRect.height
+            height: visibleChildren.length > 0 ? implicitHeight: 0
         }
 
         Item {
@@ -153,7 +162,8 @@ Window {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            height: childrenRect.height
+            implicitHeight: childrenRect.height
+            height: visibleChildren.length > 0 ? implicitHeight: 0
         }
 
         onVisibleChanged: if (visible && menuBar) menuBar.__parentWindow = root

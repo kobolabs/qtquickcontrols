@@ -113,8 +113,8 @@ Style {
     property Component scrollBarBackground: Item {
         property bool sticky: false
         property bool hovered: styleData.hovered
-        implicitWidth: 16
-        implicitHeight: 16
+        implicitWidth: Math.round(TextSingleton.implicitHeight)
+        implicitHeight: Math.round(TextSingleton.implicitHeight)
         clip: true
         opacity: transientScrollBars ? 0.5 : 1.0
         visible: !transientScrollBars || sticky
@@ -128,6 +128,7 @@ Style {
             anchors.bottomMargin: styleData.horizontal ? -1 : -2
         }
         onHoveredChanged: if (hovered) sticky = true
+        onVisibleChanged: if (!visible) sticky = false
     }
 
     /*! This component controls the appearance of the
@@ -145,8 +146,8 @@ Style {
     property Component handle: Item {
         property bool sticky: false
         property bool hovered: __activeControl !== "none"
-        implicitWidth: img.implicitWidth
-        implicitHeight: img.implicitHeight
+        implicitWidth: Math.round(TextSingleton.implicitHeight) + 1
+        implicitHeight: Math.round(TextSingleton.implicitHeight) + 1
         BorderImage {
             id: img
             opacity: styleData.pressed && !transientScrollBars ? 0.5 : styleData.hovered ? 1 : 0.8
@@ -160,12 +161,13 @@ Style {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.left: styleData.horizontal ? parent.left : undefined
-            width: !styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : img.implicitWidth
-            height: styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : img.implicitHeight
+            width: !styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : parent.width
+            height: styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : parent.height
             Behavior on width { enabled: !styleData.horizontal && transientScrollBars; NumberAnimation { duration: 100 } }
             Behavior on height { enabled: styleData.horizontal && transientScrollBars; NumberAnimation { duration: 100 } }
         }
         onHoveredChanged: if (hovered) sticky = true
+        onVisibleChanged: if (!visible) sticky = false
     }
 
     /*! This component controls the appearance of the
@@ -181,8 +183,8 @@ Style {
     */
     property Component incrementControl: Rectangle {
         visible: !transientScrollBars
-        implicitWidth: transientScrollBars ? 0 : 16
-        implicitHeight: transientScrollBars ? 0 : 16
+        implicitWidth: transientScrollBars ? 0 : Math.round(TextSingleton.implicitHeight)
+        implicitHeight: transientScrollBars ? 0 : Math.round(TextSingleton.implicitHeight)
         Rectangle {
             anchors.fill: parent
             anchors.bottomMargin: -1
@@ -192,12 +194,12 @@ Style {
                 anchors.fill: parent
                 anchors.margins: 1
                 color: "transparent"
-                border.color: "#88ffffff"
+                border.color: "#44ffffff"
             }
             Image {
                 source: styleData.horizontal ? "images/arrow-right.png" : "images/arrow-down.png"
                 anchors.centerIn: parent
-                opacity: control.enabled ? 0.7 : 0.5
+                opacity: control.enabled ? 0.6 : 0.5
             }
             gradient: Gradient {
                 GradientStop {color: styleData.pressed ? "lightgray" : "white" ; position: 0}
@@ -219,8 +221,8 @@ Style {
     */
     property Component decrementControl: Rectangle {
         visible: !transientScrollBars
-        implicitWidth: transientScrollBars ? 0 : 16
-        implicitHeight: transientScrollBars ? 0 : 16
+        implicitWidth: transientScrollBars ? 0 : Math.round(TextSingleton.implicitHeight)
+        implicitHeight: transientScrollBars ? 0 : Math.round(TextSingleton.implicitHeight)
         Rectangle {
             anchors.fill: parent
             anchors.topMargin: styleData.horizontal ? 0 : -1
@@ -232,14 +234,14 @@ Style {
                 anchors.fill: parent
                 anchors.margins: 1
                 color: "transparent"
-                border.color: "#88ffffff"
+                border.color: "#44ffffff"
             }
             Image {
                 source: styleData.horizontal ? "images/arrow-left.png" : "images/arrow-up.png"
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: styleData.horizontal ? 0 : -1
                 anchors.horizontalCenterOffset: styleData.horizontal ? -1 : 0
-                opacity: control.enabled ? 0.7 : 0.5
+                opacity: control.enabled ? 0.6 : 0.5
             }
             gradient: Gradient {
                 GradientStop {color: styleData.pressed ? "lightgray" : "white" ; position: 0}
@@ -272,17 +274,6 @@ Style {
                 PauseAnimation { duration: 450 }
                 NumberAnimation { properties: "opacity"; duration: 200 }
                 PropertyAction { target: panel; property: "visible"; value: false }
-                PropertyAction { target: handleControl.item; property: "sticky"; value: false }
-                PropertyAction { target: bg.item; property: "sticky"; value: false }
-            }
-        }
-
-        // once a sbar has been hovered, it sticks on the screen. however, if this
-        // sbar gets raised because the other sbar is hovered => clear the sticky bit
-        onRaisedChanged: {
-            if (raised) {
-                bg.item.sticky = false
-                handleControl.item.sticky = false
             }
         }
 

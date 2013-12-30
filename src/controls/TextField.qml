@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 
@@ -55,7 +55,7 @@ import QtQuick.Controls.Private 1.0
     TextField to be used for a password input field.
 
     You can create a custom appearance for a TextField by
-    assigning a \l TextFieldStyle.
+    assigning a \l {QtQuick.Controls.Styles::TextFieldStyle}{TextFieldStyle}.
 
     \sa TextArea, TextInput
 */
@@ -403,6 +403,18 @@ Control {
     signal accepted()
 
     /*!
+        \qmlsignal TextField::editingFinished()
+        \since 5.2
+
+        This signal is emitted when the Return or Enter key is pressed or
+        the text field loses focus. Note that if there is a validator or
+        inputMask set on the text field and enter/return is pressed, this
+        signal will only be emitted if the input follows
+        the inputMask and the validator returns an acceptable state.
+    */
+    signal editingFinished()
+
+    /*!
         \qmlmethod TextField::copy()
 
         Copies the currently selected text to the system clipboard.
@@ -557,11 +569,11 @@ Control {
         font: textInput.font
         horizontalAlignment: textInput.horizontalAlignment
         verticalAlignment: textInput.verticalAlignment
-        opacity: !textInput.text.length ? 1 : 0
+        opacity: !textInput.text.length && !textInput.inputMethodComposing ? 1 : 0
         color: __panel ? __panel.placeholderTextColor : "darkgray"
         clip: contentWidth > width;
         elide: Text.ElideRight
-        renderType: Text.NativeRendering
+        renderType: __style ? __style.renderType : Text.NativeRendering
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 
@@ -584,8 +596,14 @@ Control {
         color: __panel ? __panel.textColor : "darkgray"
         clip: contentWidth > width
 
-        renderType: Text.NativeRendering
+        renderType: __style ? __style.renderType : Text.NativeRendering
 
-        onAccepted: textfield.accepted()
+        onAccepted: {
+            Qt.inputMethod.commit()
+            Qt.inputMethod.hide()
+            textfield.accepted()
+        }
+
+        onEditingFinished: textfield.editingFinished()
     }
 }

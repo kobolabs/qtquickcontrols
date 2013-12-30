@@ -51,10 +51,10 @@ import "content"
 ApplicationWindow {
     title: "Component Gallery"
 
-    width: 600
-    height: 400
+    width: 640
+    height: 420
     minimumHeight: 400
-    minimumWidth: 570
+    minimumWidth: 600
 
     property string loremIpsum:
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
@@ -69,6 +69,8 @@ ApplicationWindow {
         nameFilters: [ "Image files (*.png *.jpg)" ]
         onAccepted: imageViewer.open(fileUrl)
     }
+
+    AboutDialog { id: aboutDialog }
 
     Action {
         id: openAction
@@ -104,6 +106,12 @@ ApplicationWindow {
         iconName: "edit-paste"
         enabled: (!!activeFocusItem && !!activeFocusItem["paste"])
         onTriggered: activeFocusItem.paste()
+    }
+
+    Action {
+        id: aboutAction
+        text: "About"
+        onTriggered: aboutDialog.open()
     }
 
     ExclusiveGroup {
@@ -209,6 +217,10 @@ ApplicationWindow {
                 title: "Me Neither"
                 visible: false
             }
+        }
+        Menu {
+            title: "&Help"
+            MenuItem { action: aboutAction }
         }
     }
 

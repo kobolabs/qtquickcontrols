@@ -89,34 +89,35 @@ Style {
     padding {
         top: 4
         left: 4
-        right: 4
+        right:  control.menu !== null ? Math.round(TextSingleton.implicitHeight * 0.5) : 4
         bottom: 4
     }
 
     /*! This defines the background of the button. */
     property Component background: Item {
-        implicitWidth: 100
-        implicitHeight: 25
-        BorderImage {
+        implicitWidth: Math.round(TextSingleton.implicitHeight * 4.5)
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
+        Rectangle {
             anchors.fill: parent
-            source: control.pressed || (control.checkable && control.checked) ? "images/button_down.png" : "images/button.png"
-            border.top: 6
-            border.bottom: 6
-            border.left: 6
-            border.right: 6
-            anchors.bottomMargin: -1
-            BorderImage {
+            anchors.bottomMargin: control.pressed ? 0 : -1
+            color: "#10000000"
+            radius: baserect.radius
+        }
+        Rectangle {
+            id: baserect
+            gradient: Gradient {
+                GradientStop {color: control.pressed ? "#aaa" : "#fefefe" ; position: 0}
+                GradientStop {color: control.pressed ? "#ccc" : "#e3e3e3" ; position: control.pressed ? 0.1: 1}
+            }
+            radius: TextSingleton.implicitHeight * 0.16
+            anchors.fill: parent
+            border.color: control.activeFocus ? "#47b" : "#999"
+            Rectangle {
                 anchors.fill: parent
-                anchors.margins: -1
-                anchors.topMargin: -2
-                anchors.rightMargin: 0
-                anchors.bottomMargin: 1
-                source: "images/focusframe.png"
-                visible: control.activeFocus
-                border.left: 4
-                border.right: 4
-                border.top: 4
-                border.bottom: 4
+                radius: parent.radius
+                color: control.activeFocus ? "#47b" : "white"
+                opacity: control.hovered || control.activeFocus ? 0.1 : 0
+                Behavior on opacity {NumberAnimation{ duration: 100 }}
             }
         }
         Image {
@@ -125,8 +126,8 @@ Style {
             source: "images/arrow-down.png"
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: 8
-            opacity: control.enabled ? 0.7 : 0.5
+            anchors.rightMargin: padding.right
+            opacity: control.enabled ? 0.6 : 0.5
         }
     }
 

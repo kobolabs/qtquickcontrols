@@ -48,7 +48,7 @@ Item {
 
     TestCase {
         id: testCase
-        name: "Tests_ToolBar"
+        name: "Tests_Styles"
         when:windowShown
         width:400
         height:400
@@ -118,14 +118,14 @@ Item {
 
         function test_createToolBarStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Private 1.0; \
+                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: ToolBarStyle {}}'
                         , container, '')
         }
 
         function test_createStatusBarStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Private 1.0; \
+                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: StatusBarStyle {}}'
                         , container, '')
         }
@@ -155,6 +155,13 @@ Item {
             var control = Qt.createQmlObject(
                         'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: TabViewStyle {}}'
+                        , container, '')
+        }
+
+        function test_createTextAreaStyle() {
+            var control = Qt.createQmlObject(
+                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                    Rectangle { width: 50; height: 50;  property Component style: TextAreaStyle {}}'
                         , container, '')
         }
     }

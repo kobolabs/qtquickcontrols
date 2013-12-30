@@ -17,7 +17,8 @@ SOURCES += \
     $$PWD/qquickwheelarea.cpp \
     $$PWD/qquickabstractstyle.cpp
 
-qtHaveModule(widgets) {
+
+!android: !ios: !blackberry: qtHaveModule(widgets) {
     QT += widgets
     HEADERS += $$PWD/qquickstyleitem_p.h
     SOURCES += $$PWD/qquickstyleitem.cpp
@@ -29,6 +30,8 @@ PRIVATE_QML_FILES += \
     $$PWD/TabBar.qml \
     $$PWD/BasicButton.qml \
     $$PWD/Control.qml \
+    $$PWD/FastGlow.qml \
+    $$PWD/SourceProxy.qml\
     $$PWD/Style.qml \
     $$PWD/style.js \
     $$PWD/ModalPopupBehavior.qml \
@@ -37,8 +40,10 @@ PRIVATE_QML_FILES += \
     $$PWD/ScrollViewHelper.qml \
     $$PWD/ScrollBar.qml \
     $$PWD/TableViewSelection.qml \
+    $$PWD/TextSingleton.qml \
     $$PWD/FocusFrame.qml \
     $$PWD/ColumnMenuContent.qml \
+    $$PWD/MenuContentItem.qml \
     $$PWD/MenuContentScroller.qml \
     $$PWD/qmldir
 

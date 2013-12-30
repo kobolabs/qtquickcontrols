@@ -446,7 +446,203 @@ Module {
         Signal { name: "horizontalWheelMoved" }
     }
     Component {
-        prototype: "QQuickWindowQmlImpl"
+        name: "QQuickWindow"
+        defaultProperty: "data"
+        prototype: "QWindow"
+        exports: ["QtQuick.Window/Window 2.0", "QtQuick.Window/Window 2.1"]
+        exportMetaObjectRevisions: [0, 1]
+        Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
+        Property { name: "color"; type: "QColor" }
+        Property { name: "contentItem"; type: "QQuickItem"; isReadonly: true; isPointer: true }
+        Property {
+            name: "activeFocusItem"
+            revision: 1
+            type: "QQuickItem"
+            isReadonly: true
+            isPointer: true
+        }
+        Signal { name: "frameSwapped" }
+        Signal { name: "sceneGraphInitialized" }
+        Signal { name: "sceneGraphInvalidated" }
+        Signal { name: "beforeSynchronizing" }
+        Signal { name: "beforeRendering" }
+        Signal { name: "afterRendering" }
+        Signal {
+            name: "closing"
+            revision: 1
+            Parameter { name: "close"; type: "QQuickCloseEvent"; isPointer: true }
+        }
+        Signal {
+            name: "colorChanged"
+            Parameter { type: "QColor" }
+        }
+        Signal { name: "activeFocusItemChanged"; revision: 1 }
+        Method { name: "update" }
+        Method { name: "releaseResources" }
+    }
+    Component {
+        name: "QWindow"
+        prototype: "QObject"
+        Enum {
+            name: "Visibility"
+            values: {
+                "Hidden": 0,
+                "AutomaticVisibility": 1,
+                "Windowed": 2,
+                "Minimized": 3,
+                "Maximized": 4,
+                "FullScreen": 5
+            }
+        }
+        Property { name: "title"; type: "string" }
+        Property { name: "modality"; type: "Qt::WindowModality" }
+        Property { name: "flags"; type: "Qt::WindowFlags" }
+        Property { name: "x"; type: "int" }
+        Property { name: "y"; type: "int" }
+        Property { name: "width"; type: "int" }
+        Property { name: "height"; type: "int" }
+        Property { name: "minimumWidth"; revision: 1; type: "int" }
+        Property { name: "minimumHeight"; revision: 1; type: "int" }
+        Property { name: "maximumWidth"; revision: 1; type: "int" }
+        Property { name: "maximumHeight"; revision: 1; type: "int" }
+        Property { name: "visible"; type: "bool" }
+        Property { name: "active"; revision: 1; type: "bool"; isReadonly: true }
+        Property { name: "visibility"; revision: 1; type: "Visibility" }
+        Property { name: "contentOrientation"; revision: 1; type: "Qt::ScreenOrientation" }
+        Property { name: "opacity"; revision: 1; type: "double" }
+        Signal {
+            name: "screenChanged"
+            Parameter { name: "screen"; type: "QScreen"; isPointer: true }
+        }
+        Signal {
+            name: "modalityChanged"
+            Parameter { name: "modality"; type: "Qt::WindowModality" }
+        }
+        Signal {
+            name: "windowStateChanged"
+            Parameter { name: "windowState"; type: "Qt::WindowState" }
+        }
+        Signal {
+            name: "xChanged"
+            Parameter { name: "arg"; type: "int" }
+        }
+        Signal {
+            name: "yChanged"
+            Parameter { name: "arg"; type: "int" }
+        }
+        Signal {
+            name: "widthChanged"
+            Parameter { name: "arg"; type: "int" }
+        }
+        Signal {
+            name: "heightChanged"
+            Parameter { name: "arg"; type: "int" }
+        }
+        Signal {
+            name: "minimumWidthChanged"
+            revision: 1
+            Parameter { name: "arg"; type: "int" }
+        }
+        Signal {
+            name: "minimumHeightChanged"
+            revision: 1
+            Parameter { name: "arg"; type: "int" }
+        }
+        Signal {
+            name: "maximumWidthChanged"
+            revision: 1
+            Parameter { name: "arg"; type: "int" }
+        }
+        Signal {
+            name: "maximumHeightChanged"
+            revision: 1
+            Parameter { name: "arg"; type: "int" }
+        }
+        Signal {
+            name: "visibleChanged"
+            Parameter { name: "arg"; type: "bool" }
+        }
+        Signal {
+            name: "visibilityChanged"
+            revision: 1
+            Parameter { name: "visibility"; type: "QWindow::Visibility" }
+        }
+        Signal { name: "activeChanged"; revision: 1 }
+        Signal {
+            name: "contentOrientationChanged"
+            revision: 1
+            Parameter { name: "orientation"; type: "Qt::ScreenOrientation" }
+        }
+        Signal {
+            name: "focusObjectChanged"
+            Parameter { name: "object"; type: "QObject"; isPointer: true }
+        }
+        Signal {
+            name: "opacityChanged"
+            revision: 1
+            Parameter { name: "opacity"; type: "double" }
+        }
+        Method { name: "requestActivate"; revision: 1 }
+        Method {
+            name: "setVisible"
+            Parameter { name: "visible"; type: "bool" }
+        }
+        Method { name: "show" }
+        Method { name: "hide" }
+        Method { name: "showMinimized" }
+        Method { name: "showMaximized" }
+        Method { name: "showFullScreen" }
+        Method { name: "showNormal" }
+        Method { name: "close"; type: "bool" }
+        Method { name: "raise" }
+        Method { name: "lower" }
+        Method {
+            name: "setTitle"
+            Parameter { type: "string" }
+        }
+        Method {
+            name: "setX"
+            Parameter { name: "arg"; type: "int" }
+        }
+        Method {
+            name: "setY"
+            Parameter { name: "arg"; type: "int" }
+        }
+        Method {
+            name: "setWidth"
+            Parameter { name: "arg"; type: "int" }
+        }
+        Method {
+            name: "setHeight"
+            Parameter { name: "arg"; type: "int" }
+        }
+        Method {
+            name: "setMinimumWidth"
+            revision: 1
+            Parameter { name: "w"; type: "int" }
+        }
+        Method {
+            name: "setMinimumHeight"
+            revision: 1
+            Parameter { name: "h"; type: "int" }
+        }
+        Method {
+            name: "setMaximumWidth"
+            revision: 1
+            Parameter { name: "w"; type: "int" }
+        }
+        Method {
+            name: "setMaximumHeight"
+            revision: 1
+            Parameter { name: "h"; type: "int" }
+        }
+        Method {
+            name: "alert"
+            Parameter { name: "msec"; type: "int" }
+        }
+    }
+    Component {
+        prototype: "QQuickWindow"
         name: "QtQuick.Controls/ApplicationWindow"
         exports: ["QtQuick.Controls/ApplicationWindow 1.0"]
         exportMetaObjectRevisions: [0]
@@ -752,7 +948,164 @@ Module {
         Property { name: "__style"; type: "QObject"; isReadonly: true; isPointer: true }
     }
     Component {
+        name: "QQuickText"
+        defaultProperty: "data"
         prototype: "QQuickImplicitSizeItem"
+        exports: ["QtQuick/Text 2.0"]
+        exportMetaObjectRevisions: [0]
+        Enum {
+            name: "HAlignment"
+            values: {
+                "AlignLeft": 1,
+                "AlignRight": 2,
+                "AlignHCenter": 4,
+                "AlignJustify": 8
+            }
+        }
+        Enum {
+            name: "VAlignment"
+            values: {
+                "AlignTop": 32,
+                "AlignBottom": 64,
+                "AlignVCenter": 128
+            }
+        }
+        Enum {
+            name: "TextStyle"
+            values: {
+                "Normal": 0,
+                "Outline": 1,
+                "Raised": 2,
+                "Sunken": 3
+            }
+        }
+        Enum {
+            name: "TextFormat"
+            values: {
+                "PlainText": 0,
+                "RichText": 1,
+                "AutoText": 2,
+                "StyledText": 4
+            }
+        }
+        Enum {
+            name: "TextElideMode"
+            values: {
+                "ElideLeft": 0,
+                "ElideRight": 1,
+                "ElideMiddle": 2,
+                "ElideNone": 3
+            }
+        }
+        Enum {
+            name: "WrapMode"
+            values: {
+                "NoWrap": 0,
+                "WordWrap": 1,
+                "WrapAnywhere": 3,
+                "WrapAtWordBoundaryOrAnywhere": 4,
+                "Wrap": 4
+            }
+        }
+        Enum {
+            name: "RenderType"
+            values: {
+                "QtRendering": 0,
+                "NativeRendering": 1
+            }
+        }
+        Enum {
+            name: "LineHeightMode"
+            values: {
+                "ProportionalHeight": 0,
+                "FixedHeight": 1
+            }
+        }
+        Enum {
+            name: "FontSizeMode"
+            values: {
+                "FixedSize": 0,
+                "HorizontalFit": 1,
+                "VerticalFit": 2,
+                "Fit": 3
+            }
+        }
+        Property { name: "text"; type: "string" }
+        Property { name: "font"; type: "QFont" }
+        Property { name: "color"; type: "QColor" }
+        Property { name: "linkColor"; type: "QColor" }
+        Property { name: "style"; type: "TextStyle" }
+        Property { name: "styleColor"; type: "QColor" }
+        Property { name: "horizontalAlignment"; type: "HAlignment" }
+        Property { name: "effectiveHorizontalAlignment"; type: "HAlignment"; isReadonly: true }
+        Property { name: "verticalAlignment"; type: "VAlignment" }
+        Property { name: "wrapMode"; type: "WrapMode" }
+        Property { name: "lineCount"; type: "int"; isReadonly: true }
+        Property { name: "truncated"; type: "bool"; isReadonly: true }
+        Property { name: "maximumLineCount"; type: "int" }
+        Property { name: "textFormat"; type: "TextFormat" }
+        Property { name: "elide"; type: "TextElideMode" }
+        Property { name: "contentWidth"; type: "double"; isReadonly: true }
+        Property { name: "contentHeight"; type: "double"; isReadonly: true }
+        Property { name: "paintedWidth"; type: "double"; isReadonly: true }
+        Property { name: "paintedHeight"; type: "double"; isReadonly: true }
+        Property { name: "lineHeight"; type: "double" }
+        Property { name: "lineHeightMode"; type: "LineHeightMode" }
+        Property { name: "baseUrl"; type: "QUrl" }
+        Property { name: "minimumPixelSize"; type: "int" }
+        Property { name: "minimumPointSize"; type: "int" }
+        Property { name: "fontSizeMode"; type: "FontSizeMode" }
+        Property { name: "renderType"; type: "RenderType" }
+        Signal {
+            name: "textChanged"
+            Parameter { name: "text"; type: "string" }
+        }
+        Signal {
+            name: "linkActivated"
+            Parameter { name: "link"; type: "string" }
+        }
+        Signal {
+            name: "fontChanged"
+            Parameter { name: "font"; type: "QFont" }
+        }
+        Signal {
+            name: "styleChanged"
+            Parameter { name: "style"; type: "TextStyle" }
+        }
+        Signal {
+            name: "horizontalAlignmentChanged"
+            Parameter { name: "alignment"; type: "HAlignment" }
+        }
+        Signal {
+            name: "verticalAlignmentChanged"
+            Parameter { name: "alignment"; type: "VAlignment" }
+        }
+        Signal {
+            name: "textFormatChanged"
+            Parameter { name: "textFormat"; type: "TextFormat" }
+        }
+        Signal {
+            name: "elideModeChanged"
+            Parameter { name: "mode"; type: "TextElideMode" }
+        }
+        Signal { name: "contentSizeChanged" }
+        Signal {
+            name: "lineHeightChanged"
+            Parameter { name: "lineHeight"; type: "double" }
+        }
+        Signal {
+            name: "lineHeightModeChanged"
+            Parameter { name: "mode"; type: "LineHeightMode" }
+        }
+        Signal {
+            name: "lineLaidOut"
+            Parameter { name: "line"; type: "QQuickTextLine"; isPointer: true }
+        }
+        Method { name: "doLayout" }
+    }
+
+    Component {
+        prototype: "QQuickText"
         name: "QtQuick.Controls/Label"
         exports: ["QtQuick.Controls/Label 1.0"]
         exportMetaObjectRevisions: [0]

@@ -44,15 +44,27 @@
 
 #include <QtGui/qimage.h>
 #include <QtQuick/qquickitem.h>
+#include <QtQuick/qquickimageprovider.h>
+#include "qquickpadding_p.h"
 
 QT_BEGIN_NAMESPACE
 
 class QWidget;
 class QStyleOption;
 
+class QQuickTableRowImageProvider : public QQuickImageProvider
+{
+public:
+    QQuickTableRowImageProvider()
+        : QQuickImageProvider(QQuickImageProvider::Pixmap) {}
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+};
+
 class QQuickStyleItem: public QQuickItem
 {
     Q_OBJECT
+
+    Q_PROPERTY(QQuickPadding* border READ border CONSTANT)
 
     Q_PROPERTY( bool sunken READ sunken WRITE setSunken NOTIFY sunkenChanged)
     Q_PROPERTY( bool raised READ raised WRITE setRaised NOTIFY raisedChanged)
@@ -81,6 +93,11 @@ class QQuickStyleItem: public QQuickItem
 
     Q_PROPERTY( int contentWidth READ contentWidth() WRITE setContentWidth NOTIFY contentWidthChanged)
     Q_PROPERTY( int contentHeight READ contentHeight() WRITE setContentHeight NOTIFY contentHeightChanged)
+
+    Q_PROPERTY( int textureWidth READ textureWidth WRITE setTextureWidth NOTIFY textureWidthChanged)
+    Q_PROPERTY( int textureHeight READ textureHeight WRITE setTextureHeight NOTIFY textureHeightChanged)
+
+    QQuickPadding* border() { return &m_border; }
 
 public:
     QQuickStyleItem(QQuickItem *parent = 0);
@@ -160,7 +177,7 @@ public:
     void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged();}}
     void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged();}}
     void setStep(int step) { if (m_step != step) { m_step = step; emit stepChanged(); }}
-    void setPaintMargins(int value) { if (m_paintMargins!= value) {m_paintMargins = value;} }
+    void setPaintMargins(int value) { if (m_paintMargins!= value) {m_paintMargins = value; emit paintMarginsChanged(); } }
     void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
@@ -178,6 +195,12 @@ public:
 
     Q_INVOKABLE qreal textWidth(const QString &);
     Q_INVOKABLE qreal textHeight(const QString &);
+
+    int textureWidth() const { return m_textureWidth; }
+    void setTextureWidth(int w);
+
+    int textureHeight() const { return m_textureHeight; }
+    void setTextureHeight(int h);
 
 public Q_SLOTS:
     int pixelMetric(const QString&);
@@ -217,6 +240,9 @@ Q_SIGNALS:
 
     void contentWidthChanged(int arg);
     void contentHeightChanged(int arg);
+
+    void textureWidthChanged(int w);
+    void textureHeightChanged(int h);
 
 protected:
     virtual bool event(QEvent *);
@@ -259,7 +285,11 @@ protected:
     int m_contentWidth;
     int m_contentHeight;
 
+    int m_textureWidth;
+    int m_textureHeight;
+
     QImage m_image;
+    QQuickPadding m_border;
 };
 
 QT_END_NAMESPACE

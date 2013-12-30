@@ -18,12 +18,15 @@ STYLES_QML_FILES = \
     $$PWD/Base/StatusBarStyle.qml \
     $$PWD/Base/TableViewStyle.qml \
     $$PWD/Base/TabViewStyle.qml \
+    $$PWD/Base/TextAreaStyle.qml \
     $$PWD/Base/TextFieldStyle.qml \
     $$PWD/Base/ToolBarStyle.qml \
     $$PWD/Base/ToolButtonStyle.qml
 
 # Desktop
 STYLES_QML_FILES += \
+    $$PWD/Desktop/qmldir \
+    $$PWD/Desktop/RowItemSingleton.qml \
     $$PWD/Desktop/ButtonStyle.qml \
     $$PWD/Desktop/BusyIndicatorStyle.qml \
     $$PWD/Desktop/CheckBoxStyle.qml \
@@ -41,6 +44,7 @@ STYLES_QML_FILES += \
     $$PWD/Desktop/StatusBarStyle.qml\
     $$PWD/Desktop/TabViewStyle.qml \
     $$PWD/Desktop/TableViewStyle.qml \
+    $$PWD/Desktop/TextAreaStyle.qml \
     $$PWD/Desktop/TextFieldStyle.qml \
     $$PWD/Desktop/ToolBarStyle.qml \
     $$PWD/Desktop/ToolButtonStyle.qml
@@ -54,6 +58,8 @@ STYLES_QML_FILES += \
     $$PWD/Base/images/groupbox.png \
     $$PWD/Base/images/focusframe.png \
     $$PWD/Base/images/tab_selected.png \
+    $$PWD/Base/images/slider-handle.png \
+    $$PWD/Base/images/slider-groove.png \
     $$PWD/Base/images/scrollbar-handle-horizontal.png \
     $$PWD/Base/images/scrollbar-handle-vertical.png \
     $$PWD/Base/images/scrollbar-handle-transient.png \
@@ -66,9 +72,13 @@ STYLES_QML_FILES += \
     $$PWD/Base/images/arrow-left.png \
     $$PWD/Base/images/arrow-left@2x.png \
     $$PWD/Base/images/arrow-right.png \
-    $$PWD/Base/images/arrow-right@2x.png
+    $$PWD/Base/images/arrow-right@2x.png \
+    $$PWD/Base/images/spinner_small.png \
+    $$PWD/Base/images/spinner_medium.png \
+    $$PWD/Base/images/spinner_large.png \
+    $$PWD/Base/images/check.png \
+    $$PWD/Base/images/check@2x.png
 
 STYLES_QML_FILES += $$PWD/qmldir
 
 QML_FILES += $$STYLES_QML_FILES
-
